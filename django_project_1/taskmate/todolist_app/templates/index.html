@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+  <title>Welcome to Taskmate</title>
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <div class="row mt-5">
+      <div class="col-lg-4">
+        <img src="{% static 'images/stickynotes-1.jpg' %}"
+             alt="NOtes"
+             width="360"
+             height="250">
+      </div>
+      <div class="col-lg-4">
+        <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bm90ZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60""
+          alt="NOtes"
+          width="360"
+          height="250">
+        </div>
+        <div class="col-lg-4">
+          <img src="https://plus.unsplash.com/premium_photo-1673984261105-e33326a86311?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG5vdGV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+               alt="NOtes"
+               width="360"
+               height="250">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-10 offset-md-1">
+          <center>
+            <p class="h1 text-primary">Quick And Easy To Use, Anytime, Anywhere!</p>
+          </center>
+          <center>
+            <p class="h2 mt-3">"Plan Your Day Better, Get Your Life Organized"</p>
+          </center>
+          <center>
+            <p class="h5">TASKMATE Lets You Keep Track Of Your Task In One Place.</p>
+          </center>
+          <center><a href="{% url 'todolist' %}">
+            <button type="button" class="btn btn-primary btn-lg mt-3 shadow">Let's Get Started</button>
+          </a></center>
+        </div>
+      </div>
+    </div>
+  {% endblock content %}

@@ -1,53 +1,101 @@
-{% extends 'base.html' %} {% block title %}
-<title>To-do list manager</title>
-{% endblock title %} {% block content %}
-<div class="container">
-  <br/>
-  <form>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-  <br />
-  <table class="table table-bordered">
-    <thead class="table-dark">
-      <th scope="col">Task</th>
-      <th scope="col">Done</th>
-      <th scope="col">Edit</th>
-      <th scope="col">Delete</th>
-    </thead>
-    <tbody>
-      {% for obj in all_tasks %}
-      
-        {% if obj.done %}
-      <tr class = "table-success">
-        <td scope="row">{{obj.task}}</td>
-        <td>Completed</td>
-        <td>Edit</td>
-        <td>Delete</td>
-      </tr>
-        {% else %}
-      <tr >
-        <td scope="row">{{obj.task}}</td>
-        <td>Not Completed</td>
-        <td>Edit</td>
-        <td>Delete</td>
-      </tr>
-        {% endif %}
-      </tr>
+{% extends 'base.html' %}
+{% block title %}
+  <title>To-do list manager</title>
+{% endblock title %}
+{% block content %}
+  <div class="container">
+    <br />
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ message }}
+        </div>
       {% endfor %}
+    {% endif %}
+    <div class="container">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-lg-6">
+            <input type="text" class="form-control" name="task" placeholder="New Task">
+          </div>
+          <div class="col-lg-2">
+            <button type="submit" class="btn btn-primary btn-block">Add Task</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <br />
+    <table class="table table-bordered text-center">
+      <thead class="table-dark">
+        <th scope="col" class="col-7">Task</th> <!-- 70% width -->
+        <th scope="col" class="col-3">Done</th> <!-- 30% width -->
+        <th scope="col" class="col-1">Edit</th> <!-- 10% width -->
+        <th scope="col" class="col-1">Delete</th> <!-- 10% width -->
+      </thead>
+      <tbody>
+        {% if all_tasks %}
+          {% for obj in all_tasks %}
+            {% if obj.done %}
+              <tr class="table-success">
+                <td scope="row"><del>{{ obj.task }}</del></td>
+                <td>
+                  <a href="{% url 'pending_task' obj.id %}"><button type="button" class="btn btn-dark">Mark This Pending</button></a>
+                </td>
+                <td>
+                  <a href="{% url 'edit_task' obj.id %}"><button type="button" class="btn btn-warning">Edit</button></a>
+                </td>
+                <td>
+                  <a href="{% url 'delete_task' obj.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+                </td>
+              </tr>
+            {% else %}
+              <tr>
+                <td scope="row">{{ obj.task }}</td>
+                <td>
+                  <a href="{% url 'complete_task' obj.id %}"><button type="button" class="btn btn-info">Mark This Completed</button></a>
+                </td>
+                <td>
+                  <a href="{% url 'edit_task' obj.id %}"><button type="button" class="btn btn-warning">Edit</button></a>
+                </td>
+                <td>
+                  <a href="{% url 'delete_task' obj.id %}"><button type="button" class="btn btn-danger">Delete</button></a>
+                </td>
+              </tr>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      {% endif %}
     </tbody>
-  </table>
+    </table>
+    
+  <nav aria-label="...">
+    <ul class="pagination">
+      <li class="page-item">
+        <a class="page-link" href="?pg=1"><<</a>
+      </li>
+      {% if all_tasks.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?pg={{ all_tasks.previous_page_number }}">{{ all_tasks.previous_page_number }}</a>
+      </li>
+      {% endif %}
+      <li class="page-item active">
+        <li class="page-item">
+          <a class="page-link" href="?pg={{ all_tasks.number }}">{{ all_tasks.number }}</a>
+        </li>
+      </li>
+      {% if all_tasks.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?pg={{ all_tasks.next_page_number }}">{{ all_tasks.next_page_number }}</a>
+      </li>
+      {% endif %}
+      <li class="page-item">
+        <a class="page-link" href="?pg = {{all_tasks.paginator.num_pages}}">>></a>
+      </li>
+    </ul>
+  </nav>
 </div>
 {% endblock content %}

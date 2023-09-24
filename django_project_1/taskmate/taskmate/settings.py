@@ -11,19 +11,23 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os
 from pathlib import Path
+import environ
 
+env = environ.Env()
+environ.Env.read_env()
+ 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+# environ.Env.read_env(env_file=os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-v_+i#azkv9es&hp*&la$@b!h79^^pxv3zuw26pi^fwf&3*p#dq"
+SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DJANGO_DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -38,6 +42,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "todolist_app",
+    "users_app",
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +80,20 @@ WSGI_APPLICATION = "taskmate.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env("DJANGO_DB_NAME"),
+        'USER': env("DJANGO_DB_USER"),
+        'PASSWORD': env("DJANGO_DB_PASSWORD"),
+        'HOST': env("DJANGO_DB_HOST"),
+        'PORT': env("DJANGO_DB_PORT"),
     }
 }
 
@@ -114,7 +130,11 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     (os.path.join(BASE_DIR, 'static'))
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+LOGIN_REDIRECT_URL = 'todolist'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+LOGIN_URL = "login"

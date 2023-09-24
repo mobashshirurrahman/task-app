@@ -1,13 +1,25 @@
 {% extends 'base.html' %}
-
 {% block title %}
-<title>
-    About Us
-</title>
+  <title>About Us</title>
 {% endblock title %}
-
 {% block content %}
-<div class="container">
-    <h1>{{about_text}}</h1>
+  <div class="container">
+    <div class="container mt-5">
+      <h1 class="text-center">About Us</h1>
+      <div class="row">
+        <div class="col-md-6">
+          <h3>Our Story</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod erat eget orci interdum interdum. Nullam eu libero ut justo ultricies viverra. Praesent bibendum, odio non congue tristique, velit libero rhoncus risus, a malesuada elit nisi at tortor. Nullam malesuada libero vitae semper.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h3>Our Mission</h3>
+          <p>
+            Our mission is to provide high-quality products/services to our customers. We strive for excellence in everything we do and aim to make a positive impact on our community. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock content %}
